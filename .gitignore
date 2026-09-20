@@ -1,0 +1,159 @@
+# ─────────────────────────────────────────────
+# Java / JVM
+# ─────────────────────────────────────────────
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# ─────────────────────────────────────────────
+# Maven
+# ─────────────────────────────────────────────
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ─────────────────────────────────────────────
+# IDEs / Editores
+# ─────────────────────────────────────────────
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.settings/
+.classpath
+.project
+.metadata/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+nb-configuration.xml
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Neovim / Vim
+*.swp
+*.swo
+*.swn
+*~
+Session.vim
+.netrwhist
+.nvim/
+
+# ─────────────────────────────────────────────
+# Spring Boot / Spring
+# ─────────────────────────────────────────────
+.mvn/
+mvnw
+mvnw.cmd
+.springBeans
+.spring-boot-devtools.properties
+*.pid
+
+# ─────────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────────
+*.log
+logs/
+log/
+logfile
+
+# ─────────────────────────────────────────────
+# Sistema operativo
+# ─────────────────────────────────────────────
+# Linux
+*~
+.directory
+.Trash-*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ─────────────────────────────────────────────
+# Variables de entorno / Secretos
+# ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.local.properties
+application-local.properties
+application-secret.properties
+application-prod.properties
+
+# ─────────────────────────────────────────────
+# Credenciales / Certificados
+# ─────────────────────────────────────────────
+*.jks
+*.p12
+*.pfx
+*.key
+*.pem
+*.crt
+
+# ─────────────────────────────────────────────
+# Bases de datos locales
+# ─────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+
+# ─────────────────────────────────────────────
+# Tomcat / Servidor embebido
+# ─────────────────────────────────────────────
+tomcat.*
+*.pid
+work/
+
+# ─────────────────────────────────────────────
+# Archivos temporales
+# ─────────────────────────────────────────────
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*.swa
+*.swn
+
+# ─────────────────────────────────────────────
+# Otros
+# ─────────────────────────────────────────────
+.gradle/
+build/
