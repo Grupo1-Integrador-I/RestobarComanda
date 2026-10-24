@@ -1,14 +1,17 @@
 package presentacion.excepcion;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.puerto.externo.LoggerPort;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import presentacion.api.dto.ErrorResponse;
 import java.util.stream.Collectors;
 /**
@@ -20,6 +23,13 @@ public class GlobalExceptionHandler{
     private final LoggerPort logger;
     public GlobalExceptionHandler(LoggerPort logger){
         this.logger=logger;
+    }
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> manejarRecursoNoEncontrado(RecursoNoEncontradoException ex,
+                                                                    HttpServletRequest req){
+        logger.warn("Recurso no encontrado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.de(HttpStatus.NOT_FOUND, ex.getMessage(), req.getRequestURI()));
     }
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> manejarIllegalArgument(IllegalArgumentException ex,
@@ -45,8 +55,8 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.de(HttpStatus.BAD_REQUEST, detalle, req.getRequestURI()));
     }
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> manejarNoAutenticado(UsernameNotFoundException ex,
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> manejarNoAutenticado(AuthenticationException ex,
                                                               HttpServletRequest req){
         logger.warn("Autenticación fallida: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -58,6 +68,13 @@ public class GlobalExceptionHandler{
         logger.warn("Acceso denegado: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.de(HttpStatus.FORBIDDEN, "Acceso denegado", req.getRequestURI()));
+    }
+    @ExceptionHandler({NoResourceFoundException.class, NoHandlerFoundException.class})
+    public ResponseEntity<ErrorResponse> manejarRutaNoEncontrada(Exception ex,
+                                                                 HttpServletRequest req){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.de(HttpStatus.NOT_FOUND,
+                        "Recurso no encontrado", req.getRequestURI()));
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> manejarGenerico(Exception ex, HttpServletRequest req){

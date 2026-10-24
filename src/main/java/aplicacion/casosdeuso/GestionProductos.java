@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.CategoriaProducto;
 import dominio.modelo.Monto;
 import dominio.modelo.Producto;
@@ -33,7 +34,7 @@ public class GestionProductos{
         return producto;
     }
     public void actualizar(Long id, String nombre, Monto precio, CategoriaProducto categoria){
-        Producto producto=obtenerProductoOLanzar(id);
+        Producto producto=obtener(id);
         if(nombre!=null&&!nombre.isBlank()&&!nombre.equals(producto.getNombre())){
             if(repositorioProducto.buscarPorNombre(nombre).isPresent())
                 throw new IllegalStateException("Ya existe un producto con el nombre " + nombre);
@@ -47,21 +48,27 @@ public class GestionProductos{
         logger.info("Producto actualizado: {}", producto);
     }
     public void desactivar(Long id){
-        Producto producto=obtenerProductoOLanzar(id);
+        Producto producto=obtener(id);
         producto.desactivar();
         repositorioProducto.actualizar(producto);
         logger.info("Producto desactivado: {}", producto);
     }
     public void activar(Long id){
-        Producto producto=obtenerProductoOLanzar(id);
+        Producto producto=obtener(id);
         producto.activar();
         repositorioProducto.actualizar(producto);
         logger.info("Producto activado: {}", producto);
     }
     public void eliminar(Long id){
-        Producto producto=obtenerProductoOLanzar(id);
+        Producto producto=obtener(id);
         repositorioProducto.eliminar(producto);
         logger.info("Producto eliminado: {}", producto);
+    }
+    public Producto obtener(Long id){
+        if(id==null)
+            throw new IllegalArgumentException("ID no puede ser nulo");
+        return repositorioProducto.buscarPorId(id)
+                .orElseThrow(()->new RecursoNoEncontradoException("Producto no encontrado"));
     }
     public List<Producto> listarTodos(){
         return repositorioProducto.listarTodos();
@@ -81,11 +88,5 @@ public class GestionProductos{
         if(texto==null||texto.isBlank())
             return repositorioProducto.listarTodos();
         return repositorioProducto.buscarPorNombreContiene(texto);
-    }
-    private Producto obtenerProductoOLanzar(Long id){
-        if(id==null)
-            throw new IllegalArgumentException("ID no puede ser nulo");
-        return repositorioProducto.buscarPorId(id)
-                .orElseThrow(()->new IllegalStateException("Producto no encontrado"));
     }
 }

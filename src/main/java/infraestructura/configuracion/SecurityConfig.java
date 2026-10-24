@@ -2,6 +2,7 @@ package infraestructura.configuracion;
 import infraestructura.seguridad.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -10,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 /**
  *
  * @author inici4rsesi0n
@@ -24,6 +28,10 @@ public class SecurityConfig{
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public SecurityContextRepository securityContextRepository(){
+        return new HttpSessionSecurityContextRepository();
     }
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -41,6 +49,7 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
             .csrf(csrf->csrf.disable())
+            .securityContext(sc->sc.securityContextRepository(securityContextRepository()))
             .authorizeHttpRequests(auth->auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
@@ -49,6 +58,9 @@ public class SecurityConfig{
                 .requestMatchers("/api/cocina/**", "/api/barra/**").hasAnyRole("PREPARADOR")
                 .requestMatchers("/api/mesero/**").hasRole("MESERO")
                 .anyRequest().authenticated()
+            )
+            .exceptionHandling(ex->ex
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             )
             .logout(logout->logout
                 .logoutUrl("/api/auth/logout")

@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Mesa;
 import dominio.puerto.externo.LoggerPort;
 import dominio.puerto.repositorio.RepositorioMesa;
@@ -27,7 +28,7 @@ public class GestionMesas{
         return mesa;
     }
     public void actualizar(Long id, String numero, String ubicacion){
-        Mesa mesa=obtenerMesaOLanzar(id);
+        Mesa mesa=obtener(id);
         if(numero!=null&&!numero.isBlank()&&!numero.equals(mesa.getNumero())){
             if(repositorioMesa.buscarPorNumero(numero).isPresent())
                 throw new IllegalStateException("Ya existe una mesa con el número " + numero);
@@ -39,23 +40,29 @@ public class GestionMesas{
         logger.info("Mesa actualizada: {}", mesa);
     }
     public void eliminar(Long id){
-        Mesa mesa=obtenerMesaOLanzar(id);
+        Mesa mesa=obtener(id);
         if(!mesa.estaLibre())
             throw new IllegalStateException("No se puede eliminar una mesa ocupada");
         repositorioMesa.eliminar(mesa);
         logger.info("Mesa eliminada: {}", mesa);
     }
     public void ocupar(Long id){
-        Mesa mesa=obtenerMesaOLanzar(id);
+        Mesa mesa=obtener(id);
         mesa.ocupar();
         repositorioMesa.actualizar(mesa);
         logger.info("Mesa ocupada: {}", mesa);
     }
     public void liberar(Long id){
-        Mesa mesa=obtenerMesaOLanzar(id);
+        Mesa mesa=obtener(id);
         mesa.liberar();
         repositorioMesa.actualizar(mesa);
         logger.info("Mesa liberada: {}", mesa);
+    }
+    public Mesa obtener(Long id){
+        if(id==null)
+            throw new IllegalArgumentException("ID no puede ser nulo");
+        return repositorioMesa.buscarPorId(id)
+                .orElseThrow(()->new RecursoNoEncontradoException("Mesa no encontrada"));
     }
     public List<Mesa> listarTodas(){
         return repositorioMesa.listarTodos();
@@ -70,11 +77,5 @@ public class GestionMesas{
         if(texto==null||texto.isBlank())
             return repositorioMesa.listarTodos();
         return repositorioMesa.buscarPorNumeroContiene(texto);
-    }
-    private Mesa obtenerMesaOLanzar(Long id){
-        if(id==null)
-            throw new IllegalArgumentException("ID no puede ser nulo");
-        return repositorioMesa.buscarPorId(id)
-                .orElseThrow(()->new IllegalStateException("Mesa no encontrada"));
     }
 }
