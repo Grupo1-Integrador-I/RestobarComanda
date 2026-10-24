@@ -3,6 +3,7 @@ import dominio.modelo.ItemPedido;
 import dominio.modelo.Producto;
 import infraestructura.persistencia.entidad.EntidadItemPedido;
 import infraestructura.persistencia.entidad.EntidadPedido;
+import infraestructura.persistencia.entidad.EntidadProducto;
 /**
  *
  * @author inici4rsesi0n
@@ -17,13 +18,14 @@ public class ItemPedidoMapper{
         item.setId(e.getId());
         return item;
     }
-    public static EntidadItemPedido aEntidad(ItemPedido item, EntidadPedido parent){
+    public static EntidadItemPedido aEntidad(ItemPedido item, EntidadPedido parent,
+                                              EntidadProducto productoManaged){
         if(item==null)
             return null;
         EntidadItemPedido e=new EntidadItemPedido();
         e.setId(item.getId());
         e.setPedido(parent);
-        e.setProducto(ProductoMapper.aEntidad(item.getProducto()));
+        e.setProducto(productoManaged);
         e.setCantidad(item.getCantidad());
         e.setSubtotal(item.getSubtotal().valor());
         return e;

@@ -6,7 +6,10 @@ import dominio.modelo.Monto;
 import dominio.modelo.Pedido;
 import dominio.modelo.Usuario;
 import infraestructura.persistencia.entidad.EntidadItemPedido;
+import infraestructura.persistencia.entidad.EntidadMesa;
 import infraestructura.persistencia.entidad.EntidadPedido;
+import infraestructura.persistencia.entidad.EntidadProducto;
+import infraestructura.persistencia.entidad.EntidadUsuario;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -29,18 +32,21 @@ public class PedidoMapper{
                 new Monto(e.getTotal()), e.getEstado(),
                 e.getFechaCreacion(), e.getId());
     }
-    public static EntidadPedido aEntidad(Pedido p){
+    public static EntidadPedido aEntidad(Pedido p, EntidadMesa mesaManaged,
+                                          EntidadUsuario meseroManaged,
+                                          List<EntidadProducto> productosManaged){
         if(p==null)
             return null;
         EntidadPedido e=new EntidadPedido();
         e.setId(p.getId());
-        e.setMesa(MesaMapper.aEntidad(p.getMesa()));
-        e.setMesero(UsuarioMapper.aEntidad(p.getMesero()));
+        e.setMesa(mesaManaged);
+        e.setMesero(meseroManaged);
         e.setTotal(p.getTotal().valor());
         e.setEstado(p.getEstado());
         e.setFechaCreacion(p.getFechaCreacion());
-        for(ItemPedido item:p.getItems()){
-            e.getItems().add(ItemPedidoMapper.aEntidad(item, e));
+        List<ItemPedido> items=p.getItems();
+        for(int i=0;i<items.size();i++){
+            e.getItems().add(ItemPedidoMapper.aEntidad(items.get(i), e, productosManaged.get(i)));
         }
         return e;
     }
