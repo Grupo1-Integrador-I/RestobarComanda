@@ -14,12 +14,27 @@ jobs:
     name: Build y pruebas con Maven
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: restobar
+          POSTGRES_USER: restobar
+          POSTGRES_PASSWORD: restobar
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout del código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
@@ -30,6 +45,11 @@ jobs:
 
       - name: Ejecutar pruebas unitarias
         run: mvn -B test --file pom.xml
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/restobar
+          SPRING_DATASOURCE_USERNAME: restobar
+          SPRING_DATASOURCE_PASSWORD: restobar
+          SPRING_DATASOURCE_DRIVER: org.postgresql.Driver
 
       - name: Empaquetar (sin tests, ya ejecutados)
         run: mvn -B package -DskipTests --file pom.xml
