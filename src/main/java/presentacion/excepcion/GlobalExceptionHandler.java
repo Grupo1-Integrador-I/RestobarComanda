@@ -4,6 +4,7 @@ import dominio.puerto.externo.LoggerPort;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
@@ -54,6 +55,13 @@ public class GlobalExceptionHandler{
         logger.warn("Validación fallida: {}", detalle);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.de(HttpStatus.BAD_REQUEST, detalle, req.getRequestURI()));
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> manejarJsonMalformado(HttpMessageNotReadableException ex,
+                                                               HttpServletRequest req){
+        logger.warn("JSON malformado en {}: {}", req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.de(HttpStatus.BAD_REQUEST, "JSON malformado", req.getRequestURI()));
     }
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> manejarNoAutenticado(AuthenticationException ex,
