@@ -13,6 +13,12 @@ public class Pago{
     protected Pago(){}
     public static Pago reconstruir(Pedido pedido, Monto monto, TipoPago tipo,
                                    LocalDateTime fecha, Long id){
+        if(pedido==null)
+            throw new IllegalArgumentException("Pedido no puede ser nulo");
+        if(monto==null)
+            throw new IllegalArgumentException("Monto no puede ser nulo");
+        if(monto.valor().compareTo(pedido.getTotal().valor())!=0)
+            throw new IllegalArgumentException("El monto no coincide con el total del pedido");
         Pago p=new Pago(pedido, tipo);
         p.monto=monto;
         p.fecha=fecha;

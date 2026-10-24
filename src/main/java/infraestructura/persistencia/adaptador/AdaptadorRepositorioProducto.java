@@ -2,6 +2,7 @@ package infraestructura.persistencia.adaptador;
 import dominio.modelo.CategoriaProducto;
 import dominio.modelo.Producto;
 import dominio.puerto.repositorio.RepositorioProducto;
+import infraestructura.persistencia.entidad.EntidadProducto;
 import infraestructura.persistencia.mapper.ProductoMapper;
 import infraestructura.persistencia.repositorioJPA.RepositorioProductoJPA;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,8 @@ public class AdaptadorRepositorioProducto implements RepositorioProducto{
     }
     @Override
     public void agregar(Producto producto){
-        jpa.save(ProductoMapper.aEntidad(producto));
+        EntidadProducto guardada=jpa.save(ProductoMapper.aEntidad(producto));
+        producto.setId(guardada.getId());
     }
     @Override
     public void actualizar(Producto producto){

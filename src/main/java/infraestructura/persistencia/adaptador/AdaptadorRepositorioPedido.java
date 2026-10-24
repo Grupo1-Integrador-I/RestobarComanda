@@ -4,6 +4,7 @@ import dominio.modelo.Mesa;
 import dominio.modelo.Pedido;
 import dominio.puerto.repositorio.RepositorioPedido;
 import infraestructura.persistencia.entidad.EntidadMesa;
+import infraestructura.persistencia.entidad.EntidadPedido;
 import infraestructura.persistencia.mapper.MesaMapper;
 import infraestructura.persistencia.mapper.PedidoMapper;
 import infraestructura.persistencia.repositorioJPA.RepositorioPedidoJPA;
@@ -22,7 +23,8 @@ public class AdaptadorRepositorioPedido implements RepositorioPedido{
     }
     @Override
     public void agregar(Pedido pedido){
-        jpa.save(PedidoMapper.aEntidad(pedido));
+        EntidadPedido guardada=jpa.save(PedidoMapper.aEntidad(pedido));
+        pedido.setId(guardada.getId());
     }
     @Override
     public void actualizar(Pedido pedido){

@@ -1,6 +1,7 @@
 package aplicacion.casosdeuso;
 import dominio.modelo.Pedido;
 import dominio.puerto.externo.LoggerPort;
+import dominio.puerto.externo.NotificadorPedido;
 import dominio.puerto.repositorio.RepositorioPedido;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,9 +12,13 @@ import java.util.List;
 @Service
 public class EntregarPedido{
     private final RepositorioPedido repositorioPedido;
+    private final NotificadorPedido notificadorPedido;
     private final LoggerPort logger;
-    public EntregarPedido(RepositorioPedido repositorioPedido, LoggerPort logger){
+    public EntregarPedido(RepositorioPedido repositorioPedido,
+                          NotificadorPedido notificadorPedido,
+                          LoggerPort logger){
         this.repositorioPedido=repositorioPedido;
+        this.notificadorPedido=notificadorPedido;
         this.logger=logger;
     }
     public void ejecutar(Long pedidoId){
@@ -23,6 +28,7 @@ public class EntregarPedido{
                 .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
         pedido.marcarEntregado();
         repositorioPedido.actualizar(pedido);
+        notificadorPedido.notificarCambioEstado(pedido);
         logger.info("Pedido entregado: {}", pedido);
     }
     public List<Pedido> listarListos(){

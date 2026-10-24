@@ -3,6 +3,7 @@ import dominio.modelo.Pago;
 import dominio.modelo.Pedido;
 import dominio.modelo.TipoPago;
 import dominio.puerto.externo.LoggerPort;
+import dominio.puerto.externo.NotificadorPedido;
 import dominio.puerto.repositorio.RepositorioPago;
 import dominio.puerto.repositorio.RepositorioPedido;
 import dominio.reglas.ValidadorPedido;
@@ -15,12 +16,15 @@ import org.springframework.stereotype.Service;
 public class CobrarPedido{
     private final RepositorioPedido repositorioPedido;
     private final RepositorioPago repositorioPago;
+    private final NotificadorPedido notificadorPedido;
     private final LoggerPort logger;
     public CobrarPedido(RepositorioPedido repositorioPedido,
                         RepositorioPago repositorioPago,
+                        NotificadorPedido notificadorPedido,
                         LoggerPort logger){
         this.repositorioPedido=repositorioPedido;
         this.repositorioPago=repositorioPago;
+        this.notificadorPedido=notificadorPedido;
         this.logger=logger;
     }
     public Pago ejecutar(Long pedidoId, TipoPago tipo){
@@ -35,8 +39,9 @@ public class CobrarPedido{
             throw new IllegalStateException("El pedido ya tiene un pago registrado");
         Pago pago=new Pago(pedido, tipo);
         pedido.marcarPagado();
-        repositorioPago.agregar(pago);
         repositorioPedido.actualizar(pedido);
+        repositorioPago.agregar(pago);
+        notificadorPedido.notificarCambioEstado(pedido);
         logger.info("Pedido cobrado: {}", pedido);
         return pago;
     }

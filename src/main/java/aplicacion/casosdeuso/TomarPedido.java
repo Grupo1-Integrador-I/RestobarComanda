@@ -66,12 +66,6 @@ public class TomarPedido{
         repositorioPedido.actualizar(pedido);
         logger.info("Item eliminado del pedido {}: {}", pedido.getId(), producto.getNombre());
     }
-    public void cancelar(Long pedidoId){
-        Pedido pedido=obtenerPedidoOLanzar(pedidoId);
-        pedido.cancelar();
-        repositorioPedido.actualizar(pedido);
-        logger.info("Pedido cancelado: {}", pedido);
-    }
     public Pedido obtener(Long pedidoId){
         return obtenerPedidoOLanzar(pedidoId);
     }

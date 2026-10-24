@@ -2,6 +2,7 @@ package infraestructura.persistencia.adaptador;
 import dominio.modelo.EstadoMesa;
 import dominio.modelo.Mesa;
 import dominio.puerto.repositorio.RepositorioMesa;
+import infraestructura.persistencia.entidad.EntidadMesa;
 import infraestructura.persistencia.mapper.MesaMapper;
 import infraestructura.persistencia.repositorioJPA.RepositorioMesaJPA;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,8 @@ public class AdaptadorRepositorioMesa implements RepositorioMesa{
     }
     @Override
     public void agregar(Mesa mesa){
-        jpa.save(MesaMapper.aEntidad(mesa));
+        EntidadMesa guardada=jpa.save(MesaMapper.aEntidad(mesa));
+        mesa.setId(guardada.getId());
     }
     @Override
     public void actualizar(Mesa mesa){

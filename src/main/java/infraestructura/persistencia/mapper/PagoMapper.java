@@ -3,6 +3,7 @@ import dominio.modelo.Monto;
 import dominio.modelo.Pago;
 import dominio.modelo.Pedido;
 import infraestructura.persistencia.entidad.EntidadPago;
+import infraestructura.persistencia.entidad.EntidadPedido;
 /**
  *
  * @author inici4rsesi0n
@@ -16,12 +17,12 @@ public class PagoMapper{
         return Pago.reconstruir(pedido, new Monto(e.getMonto()),
                 e.getTipo(), e.getFecha(), e.getId());
     }
-    public static EntidadPago aEntidad(Pago p){
+    public static EntidadPago aEntidad(Pago p, EntidadPedido pedidoManaged){
         if(p==null)
             return null;
         EntidadPago e=new EntidadPago();
         e.setId(p.getId());
-        e.setPedido(PedidoMapper.aEntidad(p.getPedido()));
+        e.setPedido(pedidoManaged);
         e.setMonto(p.getMonto().valor());
         e.setTipo(p.getTipo());
         e.setFecha(p.getFecha());

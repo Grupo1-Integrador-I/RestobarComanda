@@ -1,6 +1,7 @@
 package infraestructura.persistencia.adaptador;
 import dominio.modelo.Usuario;
 import dominio.puerto.repositorio.RepositorioUsuario;
+import infraestructura.persistencia.entidad.EntidadUsuario;
 import infraestructura.persistencia.mapper.UsuarioMapper;
 import infraestructura.persistencia.repositorioJPA.RepositorioUsuarioJPA;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,8 @@ public class AdaptadorRepositorioUsuario implements RepositorioUsuario{
     }
     @Override
     public void agregar(Usuario usuario){
-        jpa.save(UsuarioMapper.aEntidad(usuario));
+        EntidadUsuario guardada=jpa.save(UsuarioMapper.aEntidad(usuario));
+        usuario.setId(guardada.getId());
     }
     @Override
     public void actualizar(Usuario usuario){
