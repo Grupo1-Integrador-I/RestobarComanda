@@ -44,6 +44,7 @@ class MeseroControllerIT{
     private Long productoId;
     @BeforeEach
     void seed() throws Exception{
+        gestionUsuarios.agregar("admin", "admin123".toCharArray(), "00000000", "Admin", "Principal", Rol.ADMINISTRADOR);
         gestionUsuarios.agregar("juan", "juan123".toCharArray(), "12345678",
                 "Juan", "Pérez", Rol.MESERO);
         Mesa mesa=new Mesa("M1", "Salón");

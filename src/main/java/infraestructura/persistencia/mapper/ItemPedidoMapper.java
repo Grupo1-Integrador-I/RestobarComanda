@@ -1,5 +1,6 @@
 package infraestructura.persistencia.mapper;
 import dominio.modelo.ItemPedido;
+import dominio.modelo.Monto;
 import dominio.modelo.Producto;
 import infraestructura.persistencia.entidad.EntidadItemPedido;
 import infraestructura.persistencia.entidad.EntidadPedido;
@@ -14,9 +15,7 @@ public class ItemPedidoMapper{
         if(e==null)
             return null;
         Producto producto=ProductoMapper.aDominio(e.getProducto());
-        ItemPedido item=new ItemPedido(producto, e.getCantidad());
-        item.setId(e.getId());
-        return item;
+        return ItemPedido.reconstruir(producto, e.getCantidad(), new Monto(e.getSubtotal()), e.getId());
     }
     public static EntidadItemPedido aEntidad(ItemPedido item, EntidadPedido parent,
                                               EntidadProducto productoManaged){

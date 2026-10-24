@@ -18,6 +18,12 @@ public class ItemPedido{
         this.cantidad=cantidad;
         this.subtotal=producto.getPrecio().multiplicar(cantidad);
     }
+    public static ItemPedido reconstruir(Producto producto, int cantidad, Monto subtotal, Long id){
+        ItemPedido item=new ItemPedido(producto, cantidad);
+        item.subtotal=subtotal;
+        item.id=id;
+        return item;
+    }
     public void actualizarCantidad(int nuevaCantidad){
         if (nuevaCantidad<=0)
             throw new IllegalArgumentException("Cantidad debe ser mayor a cero");

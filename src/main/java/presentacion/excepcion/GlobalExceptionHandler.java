@@ -2,6 +2,7 @@ package presentacion.excepcion;
 import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.puerto.externo.LoggerPort;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,6 +46,13 @@ public class GlobalExceptionHandler{
         logger.warn("Conflicto de estado: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ErrorResponse.de(HttpStatus.CONFLICT, ex.getMessage(), req.getRequestURI()));
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> manejarIntegridad(DataIntegrityViolationException ex,
+                                                           HttpServletRequest req){
+        logger.warn("Conflicto de integridad en {}: {}", req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.de(HttpStatus.CONFLICT, "El recurso ya existe o viola una restricción", req.getRequestURI()));
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> manejarValidacion(MethodArgumentNotValidException ex,

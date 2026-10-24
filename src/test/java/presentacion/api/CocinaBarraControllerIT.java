@@ -44,7 +44,6 @@ class CocinaBarraControllerIT{
     @BeforeEach
     void seed(){
         Mesa mesa=new Mesa("M1", "Salón");
-        mesasVacio();
         repositorioMesa.agregar(mesa);
         Mesero mesero=new Mesero("juan", "hashfake123456", "12345678", "Juan", "Pérez");
         repositorioUsuario.agregar(mesero);
@@ -60,7 +59,6 @@ class CocinaBarraControllerIT{
         repositorioPedido.agregar(pedido);
         pedidoId=pedido.getId();
     }
-    private void mesasVacio(){}
     @Test
     void cocinaPendientesDevuelveSoloCeviche() throws Exception{
         mockMvc.perform(get("/api/cocina/pedidos/pendientes"))

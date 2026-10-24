@@ -50,7 +50,6 @@ jobs:
           SPRING_DATASOURCE_USERNAME: restobar
           SPRING_DATASOURCE_PASSWORD: restobar
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-          SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
 
       - name: Empaquetar (sin tests, ya ejecutados)
         run: mvn -B package -DskipTests --file pom.xml

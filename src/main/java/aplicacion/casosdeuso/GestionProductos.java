@@ -42,8 +42,6 @@ public class GestionProductos{
         }
         if(precio!=null&&!precio.esCero())
             producto.setPrecio(precio);
-        if(categoria!=null)
-            throw new UnsupportedOperationException("La categoría no puede modificarse");
         repositorioProducto.actualizar(producto);
         logger.info("Producto actualizado: {}", producto);
     }

@@ -1,4 +1,5 @@
 package presentacion.api;
+import aplicacion.casosdeuso.GestionUsuarios;
 import boot.RestobarApp;
 import dominio.modelo.Mesero;
 import dominio.modelo.Preparador;
@@ -31,9 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminUsuarioControllerIT{
     @Autowired MockMvc mockMvc;
     @Autowired RepositorioUsuario repositorioUsuario;
+    @Autowired GestionUsuarios gestionUsuarios;
     private Long juanId;
     @BeforeEach
     void seed(){
+        gestionUsuarios.agregar("admin", "admin123".toCharArray(), "00000000", "Admin", "Principal", Rol.ADMINISTRADOR);
         Mesero juan=new Mesero("juan", "hashfake123456", "12345678", "Juan", "Pérez");
         Preparador maria=new Preparador("maria", "hashfake654321", "87654321", "María", "García");
         repositorioUsuario.agregar(juan);

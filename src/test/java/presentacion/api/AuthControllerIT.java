@@ -1,5 +1,9 @@
 package presentacion.api;
+import aplicacion.casosdeuso.GestionUsuarios;
 import boot.RestobarApp;
+import dominio.modelo.Rol;
+import dominio.puerto.repositorio.RepositorioUsuario;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +13,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,8 +26,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(classes = RestobarApp.class)
 @AutoConfigureMockMvc
+@Transactional
 class AuthControllerIT{
     @Autowired MockMvc mockMvc;
+    @Autowired GestionUsuarios gestionUsuarios;
+    @Autowired RepositorioUsuario repositorioUsuario;
+    @BeforeEach
+    void seedAdmin(){
+        if(repositorioUsuario.buscarPorCodigo("admin").isEmpty())
+            gestionUsuarios.agregar("admin", "admin123".toCharArray(), "00000000", "Admin", "Principal", Rol.ADMINISTRADOR);
+    }
     @Test
     void loginExitosoDevuelveBodyYSesionConSecurityContext() throws Exception{
         MvcResult result=mockMvc.perform(post("/api/auth/login")
