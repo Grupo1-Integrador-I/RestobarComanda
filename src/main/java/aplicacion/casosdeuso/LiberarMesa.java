@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Mesa;
 import dominio.modelo.Pedido;
 import dominio.puerto.externo.LoggerPort;
@@ -26,7 +27,7 @@ public class LiberarMesa{
         if(mesaId==null)
             throw new IllegalArgumentException("ID de mesa no puede ser nulo");
         Mesa mesa=repositorioMesa.buscarPorId(mesaId)
-                .orElseThrow(()->new IllegalStateException("Mesa no encontrada"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Mesa no encontrada"));
         List<Pedido> pedidosActivos=repositorioPedido.listarActivosPorMesa(mesa);
         if(!pedidosActivos.isEmpty())
             throw new IllegalStateException("No se puede liberar la mesa: tiene " 

@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Mesa;
 import dominio.modelo.Pedido;
 import dominio.puerto.externo.LoggerPort;
@@ -30,7 +31,7 @@ public class CancelarPedido{
         if(pedidoId==null)
             throw new IllegalArgumentException("ID de pedido no puede ser nulo");
         Pedido pedido=repositorioPedido.buscarPorId(pedidoId)
-                .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Pedido no encontrado"));
         Mesa mesa=pedido.getMesa();
         pedido.cancelar();
         repositorioPedido.actualizar(pedido);

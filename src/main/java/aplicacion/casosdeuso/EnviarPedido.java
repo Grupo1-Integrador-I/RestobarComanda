@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Pedido;
 import dominio.puerto.externo.LoggerPort;
 import dominio.puerto.externo.NotificadorPedido;
@@ -24,7 +25,7 @@ public class EnviarPedido{
         if(pedidoId==null)
             throw new IllegalArgumentException("ID de pedido no puede ser nulo");
         Pedido pedido=repositorioPedido.buscarPorId(pedidoId)
-                .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Pedido no encontrado"));
         pedido.enviar();
         repositorioPedido.actualizar(pedido);
         notificadorPedido.notificarNuevoPedido(pedido);

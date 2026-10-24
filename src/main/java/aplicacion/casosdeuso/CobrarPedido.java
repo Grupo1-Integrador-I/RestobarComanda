@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Pago;
 import dominio.modelo.Pedido;
 import dominio.modelo.TipoPago;
@@ -33,7 +34,7 @@ public class CobrarPedido{
         if(tipo==null)
             throw new IllegalArgumentException("Tipo de pago no puede ser nulo");
         Pedido pedido=repositorioPedido.buscarPorId(pedidoId)
-                .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Pedido no encontrado"));
         ValidadorPedido.validarPuedeSerPagado(pedido);
         if(repositorioPago.buscarPorPedido(pedido).isPresent())
             throw new IllegalStateException("El pedido ya tiene un pago registrado");

@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.EstadoPedido;
 import dominio.modelo.Pedido;
 import dominio.puerto.externo.LoggerPort;
@@ -46,6 +47,6 @@ public class ActualizarEstadoPedido{
         if(id==null)
             throw new IllegalArgumentException("ID de pedido no puede ser nulo");
         return repositorioPedido.buscarPorId(id)
-                .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Pedido no encontrado"));
     }
 }

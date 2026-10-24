@@ -1,4 +1,5 @@
 package aplicacion.casosdeuso;
+import dominio.excepcion.RecursoNoEncontradoException;
 import dominio.modelo.Mesa;
 import dominio.modelo.Mesero;
 import dominio.modelo.Pedido;
@@ -35,7 +36,7 @@ public class TomarPedido{
         if(mesero==null)
             throw new IllegalArgumentException("Mesero no puede ser nulo");
         Mesa mesa=repositorioMesa.buscarPorId(mesaId)
-                .orElseThrow(()->new IllegalStateException("Mesa no encontrada"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Mesa no encontrada"));
         Pedido pedido=new Pedido(mesa, mesero);
         if(mesa.estaLibre()){
             mesa.ocupar();
@@ -50,7 +51,7 @@ public class TomarPedido{
             throw new IllegalArgumentException("ID de producto no puede ser nulo");
         Pedido pedido=obtenerPedidoOLanzar(pedidoId);
         Producto producto=repositorioProducto.buscarPorId(productoId)
-                .orElseThrow(()->new IllegalStateException("Producto no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Producto no encontrado"));
         ValidadorProducto.validarDisponible(producto);
         pedido.agregarItem(producto, cantidad);
         repositorioPedido.actualizar(pedido);
@@ -61,7 +62,7 @@ public class TomarPedido{
             throw new IllegalArgumentException("ID de producto no puede ser nulo");
         Pedido pedido=obtenerPedidoOLanzar(pedidoId);
         Producto producto=repositorioProducto.buscarPorId(productoId)
-                .orElseThrow(()->new IllegalStateException("Producto no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Producto no encontrado"));
         pedido.eliminarItem(producto);
         repositorioPedido.actualizar(pedido);
         logger.info("Item eliminado del pedido {}: {}", pedido.getId(), producto.getNombre());
@@ -73,13 +74,13 @@ public class TomarPedido{
         if(mesaId==null)
             throw new IllegalArgumentException("ID de mesa no puede ser nulo");
         Mesa mesa=repositorioMesa.buscarPorId(mesaId)
-                .orElseThrow(()->new IllegalStateException("Mesa no encontrada"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Mesa no encontrada"));
         return repositorioPedido.listarActivosPorMesa(mesa);
     }
     private Pedido obtenerPedidoOLanzar(Long id){
         if(id==null)
             throw new IllegalArgumentException("ID de pedido no puede ser nulo");
         return repositorioPedido.buscarPorId(id)
-                .orElseThrow(()->new IllegalStateException("Pedido no encontrado"));
+                .orElseThrow(()->new RecursoNoEncontradoException("Pedido no encontrado"));
     }
 }
