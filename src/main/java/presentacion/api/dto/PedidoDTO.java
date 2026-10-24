@@ -44,4 +44,15 @@ public record PedidoDTO(
                 pedido.getEstado(), pedido.getTotal().valor(),
                 pedido.getFechaCreacion(), items);
     }
+    public static PedidoDTO desdeFiltradoPorCategoria(Pedido pedido, CategoriaProducto categoria){
+        PedidoDTO completo=desde(pedido);
+        List<ItemDTO> filtrados=new ArrayList<>();
+        for(ItemDTO item:completo.items()){
+            if(item.categoria()==categoria)
+                filtrados.add(item);
+        }
+        return new PedidoDTO(completo.id(), completo.mesaId(), completo.numeroMesa(),
+                completo.meseroId(), completo.nombreMesero(), completo.estado(),
+                completo.total(), completo.fechaCreacion(), filtrados);
+    }
 }
