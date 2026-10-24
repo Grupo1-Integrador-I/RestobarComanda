@@ -1,3 +1,17 @@
+-- ============================================================================
+-- NO USAR: schema desactualizado e incompatible con las entidades JPA.
+-- Diferencias conocidas:
+--   - columnas: id_usuario/usuario/password_hash vs id/codigo/hash_contrasena
+--   - sin dni, nombre, apellido, activo en usuarios (entidad espera esos)
+--   - detalle_pedido vs items_pedido (tabla renombrada)
+--   - roles COCINA/BARRA vs PREPARADOR
+--   - estado OCUPADA/RESERVADA vs OCUPADO en mesas
+--   - categorias ENTRADA/FONDO/BEBIDA/POSTRE vs COCINA/BARRA
+-- Spring Boot con spring.jpa.hibernate.ddl-auto=update gestiona el schema
+-- real desde infraestructura.persistencia.entidad.
+-- Mantenido como referencia historica; eliminar o realinear en v2.
+-- ============================================================================
+
 -- Script de Creación de Tablas - Sistema Restobar
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario SERIAL PRIMARY KEY,
