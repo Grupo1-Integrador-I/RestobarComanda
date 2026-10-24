@@ -5,12 +5,14 @@ import dominio.puerto.externo.LoggerPort;
 import dominio.puerto.externo.NotificadorPedido;
 import dominio.puerto.repositorio.RepositorioPedido;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 /**
  *
  * @author inici4rsesi0n
  */
 @Service
+@Transactional
 public class EntregarPedido{
     private final RepositorioPedido repositorioPedido;
     private final NotificadorPedido notificadorPedido;

@@ -9,11 +9,13 @@ import dominio.puerto.repositorio.RepositorioPago;
 import dominio.puerto.repositorio.RepositorioPedido;
 import dominio.reglas.ValidadorPedido;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author inici4rsesi0n
  */
 @Service
+@Transactional
 public class CobrarPedido{
     private final RepositorioPedido repositorioPedido;
     private final RepositorioPago repositorioPago;

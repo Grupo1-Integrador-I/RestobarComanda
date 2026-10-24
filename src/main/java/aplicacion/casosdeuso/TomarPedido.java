@@ -10,12 +10,14 @@ import dominio.puerto.repositorio.RepositorioPedido;
 import dominio.puerto.repositorio.RepositorioProducto;
 import dominio.reglas.ValidadorProducto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 /**
  *
  * @author inici4rsesi0n
  */
 @Service
+@Transactional
 public class TomarPedido{
     private final RepositorioPedido repositorioPedido;
     private final RepositorioMesa repositorioMesa;

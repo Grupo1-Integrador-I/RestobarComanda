@@ -6,12 +6,14 @@ import dominio.puerto.externo.LoggerPort;
 import dominio.puerto.repositorio.RepositorioMesa;
 import dominio.puerto.repositorio.RepositorioPedido;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 /**
  *
  * @author inici4rsesi0n
  */
 @Service
+@Transactional
 public class LiberarMesa{
     private final RepositorioMesa repositorioMesa;
     private final RepositorioPedido repositorioPedido;
