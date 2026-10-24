@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,5 +81,25 @@ class AuthControllerIT{
         assertNotNull(session);
         mockMvc.perform(post("/api/auth/logout").session(session))
                 .andExpect(status().is3xxRedirection());
+    }
+    @Test
+    void meConSesionDevuelveUsuarioActual() throws Exception{
+        MvcResult loginResult=mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"codigo\":\"admin\",\"password\":\"admin123\"}"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session=(MockHttpSession)loginResult.getRequest().getSession();
+        assertNotNull(session);
+        mockMvc.perform(get("/api/auth/me").session(session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.codigo").value("admin"))
+                .andExpect(jsonPath("$.rol").value("ADMINISTRADOR"))
+                .andExpect(jsonPath("$.mensaje").value("Sesión activa"));
+    }
+    @Test
+    void meSinSesionDevuelve401() throws Exception{
+        mockMvc.perform(get("/api/auth/me"))
+                .andExpect(status().isUnauthorized());
     }
 }

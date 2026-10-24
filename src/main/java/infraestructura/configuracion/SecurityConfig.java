@@ -51,7 +51,7 @@ public class SecurityConfig{
             .csrf(csrf->csrf.disable())
             .securityContext(sc->sc.securityContextRepository(securityContextRepository()))
             .authorizeHttpRequests(auth->auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/auth/login", "/api/auth/logout").permitAll()
                 .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
