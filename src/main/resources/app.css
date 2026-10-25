@@ -1,0 +1,77 @@
+/* app.css — identidad RestoBar: azul noche + naranja (igual que las pantallas del informe) */
+:root{
+  --noche:#1b2038; --noche-2:#2a3150; --naranja:#ff6a13; --naranja-osc:#d9530a;
+  --fondo:#eef1f5; --papel:#fff; --texto:#1b2038; --gris:#667089; --linea:#d5dae4;
+  --verde:#13915a; --rojo:#c62f3b;
+  --fuente:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--fuente);color:var(--texto);background:var(--fondo);line-height:1.45}
+[hidden]{display:none!important}
+button,input{font:inherit}
+:focus-visible{outline:3px solid var(--naranja);outline-offset:2px}
+
+.logo{margin:0;font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
+.logo span{color:var(--naranja)}
+
+/* Login */
+.login{min-height:100%;display:grid;place-items:center;padding:1.5rem;background:var(--noche)}
+.login-card{width:100%;max-width:380px;background:var(--papel);padding:2rem;border-radius:12px;display:grid;gap:.4rem}
+.login-card .logo{font-size:2rem}
+.sub{margin:0 0 1rem;color:var(--gris)}
+label{font-weight:600;font-size:.9rem;margin-top:.6rem}
+input{padding:.7rem .8rem;border:1.5px solid var(--linea);border-radius:8px;background:#fff}
+input:focus{border-color:var(--naranja)}
+.error{margin:.6rem 0 0;color:var(--rojo);font-size:.9rem}
+
+.btn{margin-top:1rem;padding:.75rem 1rem;border:0;border-radius:8px;background:var(--naranja);color:#fff;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--naranja-osc)}
+.btn-chico{margin-top:.9rem;width:100%;padding:.6rem}
+.btn-borde{background:transparent;color:var(--texto);border:1.5px solid var(--linea)}
+.btn-borde:hover{background:var(--fondo)}
+
+/* Estructura de la app */
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100%}
+.side{background:var(--noche);color:#fff;padding:1.4rem 1rem;display:flex;flex-direction:column;gap:1.6rem}
+.menu{display:grid;gap:.3rem}
+.menu-item{text-align:left;padding:.65rem .8rem;border:0;border-radius:8px;background:transparent;color:#cbd2e6;cursor:pointer}
+.menu-item.activo{background:var(--naranja);color:#fff;font-weight:700}
+.usuario{margin-top:auto;display:grid;gap:.15rem}
+.usuario small{color:#aab3cf}
+.btn-salir{margin-top:.7rem;padding:.5rem;border:1px solid var(--noche-2);border-radius:8px;background:transparent;color:#fff;cursor:pointer}
+.btn-salir:hover{background:var(--noche-2)}
+
+.main{padding:1.5rem 2rem}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.4rem}
+.top h2{margin:0;font-size:1.5rem}
+.resumen{margin:.2rem 0 0;color:var(--gris)}
+.conexion{font-size:.85rem;padding:.25rem .7rem;border-radius:99px;background:#e3e6ee;color:var(--gris);white-space:nowrap}
+.conexion.en-vivo{background:#d8f3e6;color:var(--verde);font-weight:600}
+.vacio{max-width:60ch;color:var(--gris)}
+
+/* Mapa de mesas */
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem}
+.mesa{background:var(--papel);border-radius:10px;padding:1rem 1.1rem}
+.mesa.libre{border:2px dashed var(--linea)}
+.mesa.ocupada{border:2px solid var(--naranja);border-left-width:8px}
+.mesa-cab{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.mesa-num{font-size:1.15rem;font-weight:800}
+.etiqueta{font-size:.78rem;font-weight:700;padding:.15rem .55rem;border-radius:99px}
+.libre .etiqueta{background:#d8f3e6;color:var(--verde)}
+.ocupada .etiqueta{background:#ffe4d2;color:var(--naranja-osc)}
+.mesa-ubic{margin:.4rem 0 0;color:var(--gris);font-size:.9rem}
+
+/* Aviso */
+.toast{position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%);max-width:90vw;padding:.7rem 1.1rem;border-radius:8px;background:var(--noche);color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.toast-error{background:var(--rojo)}
+
+/* Móvil / tablet */
+@media (max-width:720px){
+  .app{grid-template-columns:1fr}
+  .side{flex-direction:row;align-items:center;flex-wrap:wrap;gap:.8rem;padding:.8rem 1rem}
+  .menu{display:flex}
+  .usuario{margin:0 0 0 auto;text-align:right}
+  .btn-salir{margin-top:.3rem}
+  .main{padding:1rem}
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RestoBar · Comanda digital</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+
+  <!-- Vista 1: inicio de sesión (POST /api/auth/login) -->
+  <main id="vista-login" class="login" hidden>
+    <form id="form-login" class="login-card" novalidate>
+      <h1 class="logo">Resto<span>Bar</span></h1>
+      <p class="sub">Ingresa con tu código de usuario</p>
+
+      <label for="codigo">Código</label>
+      <input id="codigo" name="codigo" autocomplete="username" autofocus required>
+
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+      <p id="login-error" class="error" role="alert" hidden></p>
+      <button type="submit" class="btn">Ingresar</button>
+    </form>
+  </main>
+
+  <!-- Vista 2: aplicación (menú lateral + contenido según el rol) -->
+  <div id="vista-app" class="app" hidden>
+    <aside class="side">
+      <h1 class="logo">Resto<span>Bar</span></h1>
+      <nav id="menu" class="menu" aria-label="Secciones"></nav>
+      <div class="usuario">
+        <strong id="usuario-nombre"></strong>
+        <small id="usuario-rol"></small>
+        <button id="btn-salir" class="btn-salir" type="button">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <section class="main">
+      <header class="top">
+        <div>
+          <h2 id="titulo"></h2>
+          <p id="resumen" class="resumen"></p>
+        </div>
+        <span id="conexion" class="conexion" title="Conexión en tiempo real">Sin conexión</span>
+      </header>
+      <div id="contenido"></div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
