@@ -1,0 +1,49 @@
+/* ==========================================
+   COMPONENTES: BADGES (estados de pedido)
+   ========================================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+
+    /* Reset defensivo: neutraliza cualquier `position: absolute` heredado */
+    position: static;
+}
+
+/* --- Variantes por estado de pedido --- */
+.badge-draft {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.badge-warning {
+    background: var(--amber-bg);
+    color: #b45309;
+}
+
+.badge-info {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-success {
+    background: var(--green-bg);
+    color: #15803d;
+}
+
+.badge-paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}

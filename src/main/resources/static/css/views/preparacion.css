@@ -1,0 +1,35 @@
+.preparacion-filtros {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.filtro-btn {
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border-color);
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.filtro-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.ticket-area-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.area-cocina .ticket-area-badge { background: #fff3e0; color: #b45309; }
+.area-barra  .ticket-area-badge { background: #dbeafe; color: #1d4ed8; }
+.area-mixto  .ticket-area-badge { background: #f3e8ff; color: #7e22ce; }

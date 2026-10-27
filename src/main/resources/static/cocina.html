@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KDS Cocina - RestoBar</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .resumen {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .pedidos {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .pedido {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 6px solid #f59e0b;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .pedido h2 {
+            margin-top: 0;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 7px 12px;
+            background: #fef3c7;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .producto {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+        }
+        
+.acciones {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.boton-accion {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.boton-accion:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>KDS - COCINA</h1>
+    <p>RestoBar Comanda Digital</p>
+</header>
+
+<main class="contenedor">
+
+    <section class="resumen">
+        <h2>Panel de preparación</h2>
+        <p id="estadoConexion">
+            Pantalla visual lista
+        </p>
+    </section>
+
+    <section id="listaPedidos" class="pedidos">
+        <div class="vacio">
+            <h2>Sin pedidos visibles</h2>
+            <p>
+                Próximamente se mostrarán aquí
+                los pedidos reales de cocina.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    const listaPedidos = document.getElementById("listaPedidos");
+    const estadoConexion = document.getElementById("estadoConexion");
+
+    function crearElemento(etiqueta, texto, clase) {
+        const elemento = document.createElement(etiqueta);
+        elemento.textContent = texto;
+
+        if (clase) {
+            elemento.className = clase;
+        }
+
+        return elemento;
+    }
+
+    async function cargarPedidosCocina() {
+        estadoConexion.textContent = "Consultando pedidos...";
+
+        try {
+            const respuesta = await fetch("/api/cocina/pendientes", {
+                credentials: "same-origin"
+            });
+
+            if (!respuesta.ok) {
+                throw new Error("HTTP " + respuesta.status);
+            }
+
+            const pedidos = await respuesta.json();
+
+            listaPedidos.replaceChildren();
+
+            if (pedidos.length === 0) {
+                const vacio = crearElemento(
+                    "div",
+                    "No hay pedidos pendientes de cocina.",
+                    "vacio"
+                );
+
+                listaPedidos.appendChild(vacio);
+            } else {
+                pedidos.forEach(pedido => {
+                    const tarjeta = crearElemento(
+                        "article",
+                        "",
+                        "pedido"
+                    );
+
+                    tarjeta.appendChild(
+                        crearElemento(
+                            "h2",
+                            "Pedido #" + pedido.id +
+                            " - Mesa " + pedido.numeroMesa
+                        )
+                    );
+
+                    tarjeta.appendChild(
+                        crearElemento(
+                            "p",
+                            "Mesero: " + pedido.nombreMesero
+                        )
+                    );
+
+                    tarjeta.appendChild(
+                        crearElemento(
+                            "span",
+                            pedido.estado,
+                            "estado"
+                        )
+                    );
+
+               
+
+pedido.items.forEach(item => {
+    const producto = crearElemento(
+        "div",
+        "",
+        "producto"
+    );
+
+    producto.appendChild(
+        crearElemento(
+            "strong",
+            item.nombreProducto + " x " + item.cantidad
+        )
+    );
+
+    producto.appendChild(
+        crearElemento(
+            "p",
+            "Estado de preparación: " +
+            item.estadoPreparacion
+        )
+    );
+
+    tarjeta.appendChild(producto);
+});
+
+
+const acciones = crearElemento("div", "", "acciones");
+
+if (pedido.items.some(item =>
+    item.estadoPreparacion === "PENDIENTE"
+)) {
+    const botonIniciar = crearElemento(
+        "button",
+        "Iniciar preparación",
+        "boton-accion"
+    );
+
+   
+botonIniciar.type = "button";
+
+botonIniciar.addEventListener("click", async () => {
+    const confirmar = confirm(
+        "¿Iniciar la preparación del pedido #" +
+        pedido.id + "?"
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    botonIniciar.disabled = true;
+
+    try {
+        const respuesta = await fetch(
+            `/api/cocina/${pedido.id}/iniciar`,
+            {
+                method: "POST",
+                credentials: "same-origin"
+            }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error(
+                "Error HTTP " + respuesta.status
+            );
+        }
+
+        await cargarPedidosCocina();
+
+    } catch (error) {
+        alert(
+            "No se pudo iniciar la preparación: " +
+            error.message
+        );
+
+        botonIniciar.disabled = false;
+    }
+});
+
+    acciones.appendChild(botonIniciar);
+}
+
+if (pedido.items.some(item =>
+    item.estadoPreparacion === "EN_PREPARACION"
+)) {
+    const botonListo = crearElemento(
+        "button",
+        "Marcar listo",
+        "boton-accion"
+    );
+
+    
+botonListo.type = "button";
+
+botonListo.addEventListener("click", async () => {
+    const confirmar = confirm(
+        "¿Marcar como listos los productos de cocina del pedido #" +
+        pedido.id + "?"
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    botonListo.disabled = true;
+
+    try {
+        const respuesta = await fetch(
+            `/api/cocina/${pedido.id}/listo`,
+            {
+                method: "POST",
+                credentials: "same-origin"
+            }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error(
+                "Error HTTP " + respuesta.status
+            );
+        }
+
+        await cargarPedidosCocina();
+
+    } catch (error) {
+        alert(
+            "No se pudo finalizar la preparación: " +
+            error.message
+        );
+
+        botonListo.disabled = false;
+    }
+});
+
+
+    acciones.appendChild(botonListo);
+}
+
+tarjeta.appendChild(acciones);
+listaPedidos.appendChild(tarjeta);
+
+                });
+            }
+
+            estadoConexion.textContent =
+                "Pedidos pendientes: " + pedidos.length;
+
+        } catch (error) {
+            estadoConexion.textContent =
+                "No se pudieron cargar los pedidos: " +
+                error.message;
+        }
+    }
+
+    cargarPedidosCocina();
+</script>
+
+</body>
+</html>

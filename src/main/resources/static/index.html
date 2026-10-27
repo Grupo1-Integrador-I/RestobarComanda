@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restobar - Comanda Digital</title>
+
+    <!-- Silencia el 404 del favicon -->
+    <link rel="icon" href="data:,">
+
+    <!-- Estilos (entry point único con todos los @import) -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Iconos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+
+    <!-- ==========================================================
+         SIDEBAR
+         ========================================================== -->
+    <aside class="sidebar">
+        <div>
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <i class="ph-fill ph-cooking-pot"></i>
+                <span>Resto<span class="highlight">Bar</span></span>
+            </div>
+
+            <!-- Navegación principal -->
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="view-mesas">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Mesas</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-comandas">
+                    <i class="ph ph-receipt"></i>
+                    <span>Comandas</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-preparacion">
+                    <i class="ph ph-fire"></i>
+                    <span>Preparación</span>
+                    <span class="nav-badge" id="cocina-badge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-target="view-admin">
+                    <i class="ph ph-shield-star"></i>
+                    <span>Admin</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <!-- Selector de rol (demo) — se llena desde SelectorRol.js -->
+            <div id="selector-rol-container"></div>
+
+            <!-- Perfil del usuario -->
+            <div class="user-profile">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqCD8FbnTr8MhlO1Ji9q5bvomvLl2_uMdyRF9JoB6Lww&s"
+                     alt="Usuario">
+                <div class="user-info">
+                    <p class="name" id="user-name">Rodrigo N.</p>
+                    <p class="role" id="user-role">Mesero</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==========================================================
+         CONTENIDO PRINCIPAL
+         ========================================================== -->
+    <main class="main-content">
+
+        <!-- ---------- VISTA: MESAS ---------- -->
+        <div id="view-mesas" class="view-section active">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Estado de Mesas</h1>
+                    <p>Gestión de atención y comandas en tiempo real.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" aria-label="Notificaciones">
+                        <i class="ph ph-bell"></i>
+                    </button>
+                    <button class="btn-primary"
+                            id="btn-nueva-orden"
+                            data-action="nueva-orden">
+                        <i class="ph ph-plus"></i>
+                        Nueva Orden
+                    </button>
+                </div>
+            </header>
+
+            <div class="tables-container">
+                <!-- Renderizado dinámico desde MesaCard.js -->
+                <div class="tables-grid" id="mesas-grid"></div>
+            </div>
+        </div>
+
+        <!-- ---------- VISTA: COMANDAS ---------- -->
+        <div id="view-comandas" class="view-section">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Historial de Comandas</h1>
+                    <p>Todas las órdenes registradas en el turno actual.</p>
+                </div>
+            </header>
+
+            <div class="tables-container">
+                <div class="comandas-list">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nro. Orden</th>
+                                <th>Mesa</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comandas-tbody">
+                            <!-- Renderizado dinámico desde main.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------- VISTA: PREPARACIÓN (Cocina + Barra) ---------- -->
+        <div id="view-preparacion" class="view-section">
+            <header class="top-header cocina-header">
+                <div class="header-title">
+                    <h1>Panel de Preparación</h1>
+                    <p>Tickets pendientes de cocina y barra.</p>
+                </div>
+            </header>
+
+            <div class="tables-container bg-darker">
+                <!-- Filtros por área -->
+                <div class="preparacion-filtros">
+                    <button class="filtro-btn active"
+                            data-action="filtrar"
+                            data-filtro="TODOS">
+                        Todos
+                    </button>
+                    <button class="filtro-btn"
+                            data-action="filtrar"
+                            data-filtro="COCINA">
+                        Cocina
+                    </button>
+                    <button class="filtro-btn"
+                            data-action="filtrar"
+                            data-filtro="BARRA">
+                        Barra
+                    </button>
+                </div>
+
+                <!-- Renderizado dinámico desde TicketPreparacion.js -->
+                <div class="kitchen-board" id="kitchen-board"></div>
+            </div>
+        </div>
+
+        <!-- ---------- VISTA: ADMINISTRACIÓN ---------- -->
+        <div id="view-admin" class="view-section">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Administración</h1>
+                    <p>Gestión de mesas, productos y usuarios.</p>
+                </div>
+            </header>
+
+            <div class="tables-container">
+                <p class="empty-state">
+                    Panel de administración — pendiente de implementar.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==========================================================
+         MODAL DE COMANDA / VER PEDIDOS
+         ========================================================== -->
+    <div class="modal-overlay" id="comanda-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-title">Nueva Comanda</h2>
+                    <p>Mozo: Rodrigo N. • <span id="modal-time">--:--</span></p>
+                </div>
+                <button class="btn-close"
+                        data-action="cerrar-comanda"
+                        aria-label="Cerrar">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="order-items" id="order-items-list">
+                    <!-- Renderizado dinámico desde ModalComanda.js -->
+                </div>
+
+                <div class="add-item-section">
+                  
+<button class="btn-dashed" data-action="agregar-item-demo">
+    <i class="ph ph-plus"></i> Agregar producto
+</button>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span class="total-price" id="modal-total">S/0.00</span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" data-action="cerrar-comanda">
+                        Cancelar
+                    </button>
+                    <button class="btn-primary" data-action="enviar-comanda">
+                        Enviar a Cocina
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+         MODAL DE PAGO
+         ========================================================== -->
+    <div class="modal-overlay" id="pago-modal">
+        <div class="modal-content">
+            <!-- Renderizado dinámico desde ModalPago.js -->
+        </div>
+    </div>
+
+    <!-- Script modular (entry point) -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

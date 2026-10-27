@@ -1,0 +1,51 @@
+.pedido-activo-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: white;
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.pedido-header small { color: var(--text-muted); font-size: 12px; display: block; }
+
+.pedido-items {
+    list-style: none;
+    margin-bottom: 12px;
+}
+
+.pedido-items li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.pedido-items .item-subtotal {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.pedido-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.pedido-total { font-size: 18px; font-weight: 700; }
+
+.pedido-actions { display: flex; gap: 8px; }
+
+.btn-sm { padding: 6px 12px; font-size: 12px; }

@@ -1,0 +1,27 @@
+/* base */
+@import url('base/variables.css');
+@import url('base/reset.css');
+
+/* layout */
+@import url('layout/sidebar.css');
+@import url('layout/header.css');
+
+/* components */
+@import url('components/buttons.css');
+@import url('components/badges.css');
+@import url('components/mesaCard.css');
+@import url('components/pedidoActivoCard.css');
+@import url('components/dataTable.css');
+@import url('components/ticketPreparacion.css');
+@import url('components/modal.css');
+@import url('components/modalPago.css');
+@import url('components/selectorRol.css');
+
+/* views */
+@import url('views/mesas.css');
+@import url('views/comandas.css');
+@import url('views/preparacion.css');
+@import url('views/admin.css');
+
+/* responsive (SIEMPRE al final) */
+@import url('layout/responsive.css');

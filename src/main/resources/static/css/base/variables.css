@@ -1,0 +1,35 @@
+/* ==========================================
+   VARIABLES - Design Tokens
+   Fuente única de verdad para colores, spacing, etc.
+   ========================================== */
+
+:root {
+    /* Colores de marca */
+    --primary: #f97316;
+    --primary-hover: #ea580c;
+    --primary-light: rgba(249, 115, 22, 0.1);
+    --secondary: #1e293b;
+    --secondary-hover: #334155;
+    --background: #f8fafc;
+
+    /* Texto */
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --text-light: #f8fafc;
+
+    /* Superficies */
+    --border-color: #e2e8f0;
+
+    /* Estados semánticos */
+    --green: #22c55e;
+    --green-bg: #dcfce7;
+    --amber: #f59e0b;
+    --amber-bg: #fef3c7;
+    --danger: #ef4444;
+
+    /* Espaciado y radios (por si luego quieres escalarlos) */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}

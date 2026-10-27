@@ -1,0 +1,136 @@
+/* ==========================================
+   COMPONENTES: BOTONES
+   ========================================== */
+
+/* --- Icon button (circular) --- */
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 20px;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+}
+
+/* --- Primario (naranja) --- */
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* --- Secundario (gris) --- */
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #475569;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover { background-color: #cbd5e1; }
+
+/* --- Éxito (verde, full width, para ticket cocina) --- */
+.btn-success {
+    background-color: var(--green);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.btn-success:hover { background-color: #16a34a; }
+
+/* --- Texto (link estilizado) --- */
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-text:hover { text-decoration: underline; }
+
+/* --- Dashed (agregar item) --- */
+.btn-dashed {
+    width: 100%;
+    padding: 16px;
+    border: 2px dashed #cbd5e1;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-dashed:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+/* --- Cerrar (X del modal) --- */
+.btn-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #e2e8f0;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.btn-close:hover {
+    background: #cbd5e1;
+    color: var(--text-dark);
+}

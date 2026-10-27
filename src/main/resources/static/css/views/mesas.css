@@ -1,0 +1,9 @@
+/* ==========================================
+   VISTA: MESAS
+   Ajustes específicos de la vista de estado de mesas.
+   (Por ahora hereda casi todo de components/mesaCard.css)
+   ========================================== */
+
+/* Espacio para futuras reglas específicas, ej:
+   .tables-grid { grid-template-columns: repeat(4, 1fr); }
+   para forzar exactamente 4 columnas en pantallas grandes. */

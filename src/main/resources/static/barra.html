@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KDS Barra - RestoBar</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #065f46;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .resumen {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .pedidos {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .pedido {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 6px solid #10b981;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .pedido h2 {
+            margin-top: 0;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 7px 12px;
+            background: #d1fae5;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .producto {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .acciones {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .boton-accion {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-accion:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>KDS - BARRA</h1>
+    <p>RestoBar Comanda Digital</p>
+</header>
+
+<main class="contenedor">
+
+    <section class="resumen">
+        <h2>Panel de preparación de bebidas</h2>
+        <p id="estadoConexion">
+            Pantalla de barra lista
+        </p>
+    </section>
+
+    <section id="listaPedidos" class="pedidos"></section>
+
+</main>
+
+<script>
+    const listaPedidos =
+        document.getElementById("listaPedidos");
+
+    const estadoConexion =
+        document.getElementById("estadoConexion");
+
+    function crearElemento(etiqueta, texto, clase) {
+        const elemento = document.createElement(etiqueta);
+
+        elemento.textContent = texto;
+
+        if (clase) {
+            elemento.className = clase;
+        }
+
+        return elemento;
+    }
+
+    async function ejecutarAccion(pedidoId, accion, boton) {
+        const mensaje = accion === "iniciar"
+            ? "¿Iniciar preparación de bebidas del pedido #"
+            : "¿Marcar listas las bebidas del pedido #";
+
+        if (!confirm(mensaje + pedidoId + "?")) {
+            return;
+        }
+
+        boton.disabled = true;
+
+        try {
+            const respuesta = await fetch(
+                `/api/barra/${pedidoId}/${accion}`,
+                {
+                    method: "POST",
+                    credentials: "same-origin"
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "Error HTTP " + respuesta.status
+                );
+            }
+
+            await cargarPedidosBarra();
+
+        } catch (error) {
+            alert(
+                "No se pudo actualizar la preparación: " +
+                error.message
+            );
+
+            boton.disabled = false;
+        }
+    }
+
+    async function cargarPedidosBarra() {
+        estadoConexion.textContent =
+            "Consultando pedidos de barra...";
+
+        try {
+            const respuesta = await fetch(
+                "/api/barra/pendientes",
+                {
+                    credentials: "same-origin",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "HTTP " + respuesta.status
+                );
+            }
+
+            const pedidos = await respuesta.json();
+
+            listaPedidos.replaceChildren();
+
+            if (pedidos.length === 0) {
+                listaPedidos.appendChild(
+                    crearElemento(
+                        "div",
+                        "No hay bebidas pendientes de preparación.",
+                        "vacio"
+                    )
+                );
+            }
+
+            pedidos.forEach(pedido => {
+                const tarjeta = crearElemento(
+                    "article",
+                    "",
+                    "pedido"
+                );
+
+                tarjeta.appendChild(
+                    crearElemento(
+                        "h2",
+                        "Pedido #" + pedido.id +
+                        " - Mesa " + pedido.numeroMesa
+                    )
+                );
+
+                tarjeta.appendChild(
+                    crearElemento(
+                        "p",
+                        "Mesero: " + pedido.nombreMesero
+                    )
+                );
+
+                tarjeta.appendChild(
+                    crearElemento(
+                        "span",
+                        pedido.estado,
+                        "estado"
+                    )
+                );
+
+                pedido.items.forEach(item => {
+                    const producto = crearElemento(
+                        "div",
+                        "",
+                        "producto"
+                    );
+
+                    producto.appendChild(
+                        crearElemento(
+                            "strong",
+                            item.nombreProducto +
+                            " x " + item.cantidad
+                        )
+                    );
+
+                    producto.appendChild(
+                        crearElemento(
+                            "p",
+                            "Estado de preparación: " +
+                            item.estadoPreparacion
+                        )
+                    );
+
+                    tarjeta.appendChild(producto);
+                });
+
+                const acciones = crearElemento(
+                    "div",
+                    "",
+                    "acciones"
+                );
+
+                const hayPendientes = pedido.items.some(
+                    item => item.estadoPreparacion === "PENDIENTE"
+                );
+
+                const hayEnPreparacion = pedido.items.some(
+                    item => item.estadoPreparacion === "EN_PREPARACION"
+                );
+
+                if (hayPendientes) {
+                    const botonIniciar = crearElemento(
+                        "button",
+                        "Iniciar preparación",
+                        "boton-accion"
+                    );
+
+                    botonIniciar.type = "button";
+
+                    botonIniciar.addEventListener(
+                        "click",
+                        () => ejecutarAccion(
+                            pedido.id,
+                            "iniciar",
+                            botonIniciar
+                        )
+                    );
+
+                    acciones.appendChild(botonIniciar);
+                }
+
+                if (hayEnPreparacion) {
+                    const botonListo = crearElemento(
+                        "button",
+                        "Marcar listo",
+                        "boton-accion"
+                    );
+
+                    botonListo.type = "button";
+
+                    botonListo.addEventListener(
+                        "click",
+                        () => ejecutarAccion(
+                            pedido.id,
+                            "listo",
+                            botonListo
+                        )
+                    );
+
+                    acciones.appendChild(botonListo);
+                }
+
+                tarjeta.appendChild(acciones);
+                listaPedidos.appendChild(tarjeta);
+            });
+
+            estadoConexion.textContent =
+                "Pedidos pendientes de barra: " +
+                pedidos.length;
+
+        } catch (error) {
+            estadoConexion.textContent =
+                "No se pudieron cargar los pedidos: " +
+                error.message;
+        }
+    }
+
+    cargarPedidosBarra();
+</script>
+
+</body>
+</html>

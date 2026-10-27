@@ -22,3 +22,22 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Maven
+target/
+
+# NetBeans
+nbproject/private/
+
+# Configuraciones privadas de Spring Boot
+application.properties
+application-local.properties
+application-*.local.properties
+.env
+.env.*
+!.env.example
+
+# Archivos de respaldo y temporales
+*.bak
+*.tmp
+

@@ -1,0 +1,166 @@
+/* ==========================================
+   COMPONENTES: MESA CARD
+   ========================================== */
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.table-card {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    border-color: var(--primary-light);
+}
+
+/* Barra superior de estado */
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+/* Header de la card (número + tag estado) */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.table-number {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background-color: #f8fafc;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* Tags de estado (reutilizables) */
+.status-tag {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-tag.eating {
+    background-color: var(--green-bg);
+    color: #15803d;
+}
+
+.status-tag.eating .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--green);
+}
+
+.status-tag.waiting {
+    background-color: var(--amber-bg);
+    color: #b45309;
+}
+
+.status-tag.available {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+/* Info de la orden */
+.table-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.table-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.table-info p.warning { color: var(--amber); }
+
+/* Footer (precio + link) */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.table-footer .price { font-size: 20px; font-weight: 700; }
+
+.table-footer .action-link {
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.table-card:hover .action-link { text-decoration: underline; }
+
+/* --- Variante: mesa libre --- */
+.table-card.free {
+    background-color: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 220px;
+    padding: 0;
+}
+
+.table-card.free:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.free-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+
+.table-card.free:hover .free-icon {
+    background-color: var(--primary);
+    color: white;
+}

@@ -1,0 +1,14 @@
+/* Vista Admin: gestión de mesas, productos y usuarios.
+   Por ahora solo un estado vacío. */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 40px;
+    font-style: italic;
+}

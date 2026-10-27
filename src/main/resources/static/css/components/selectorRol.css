@@ -1,0 +1,42 @@
+.selector-rol {
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.selector-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.selector-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.selector-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.selector-btn:hover { background: rgba(255,255,255,0.06); }
+
+.selector-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.selector-btn i { font-size: 18px; }

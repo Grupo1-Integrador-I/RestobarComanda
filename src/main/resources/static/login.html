@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestoBar - Iniciar sesión</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            width: 340px;
+            box-shadow: 0 5px 20px #0002;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 6px;
+        }
+
+        input {
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 22px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #mensaje {
+            color: red;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login">
+
+    <h1>RestoBar</h1>
+    <p>Sistema de Comandas Digitales</p>
+
+    <form id="formLogin">
+
+        <label for="codigo">Código de usuario</label>
+        <input
+            type="text"
+            id="codigo"
+            placeholder="Ejemplo: mesero01"
+            required
+        >
+
+        <label for="contrasena">Contraseña</label>
+        <input
+            type="password"
+            id="contrasena"
+            placeholder="Ingrese su contraseña"
+            required
+        >
+
+        <button type="submit" id="btnLogin">
+            Iniciar sesión
+        </button>
+
+    </form>
+
+    <div id="mensaje" role="alert"></div>
+
+</div>
+
+<script>
+    document.getElementById("formLogin")
+        .addEventListener("submit", async function(evento) {
+
+            evento.preventDefault();
+
+            const codigo =
+                document.getElementById("codigo").value.trim();
+
+            const contrasena =
+                document.getElementById("contrasena").value;
+
+            const mensaje =
+                document.getElementById("mensaje");
+
+            const boton =
+                document.getElementById("btnLogin");
+
+            mensaje.textContent = "";
+            boton.disabled = true;
+
+            try {
+                const respuesta = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        codigo: codigo,
+                        contrasena: contrasena
+                    })
+                });
+
+                if (respuesta.ok) {
+                    window.location.href = "/index.html";
+                } else {
+                    mensaje.textContent =
+                        "Código o contraseña incorrectos";
+                }
+
+            } catch (error) {
+                mensaje.textContent =
+                    "Error de conexión con el servidor";
+            } finally {
+                boton.disabled = false;
+            }
+        });
+</script>
+
+</body>
+</html>

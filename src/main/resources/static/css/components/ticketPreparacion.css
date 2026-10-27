@@ -1,0 +1,105 @@
+/* ==========================================
+   COMPONENTES: TICKET DE COCINA
+   ========================================== */
+
+.kitchen-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.kitchen-ticket {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-top: 6px solid var(--danger);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideIn 0.3s ease;
+}
+
+/* --- Header del ticket --- */
+.ticket-header {
+    padding: 16px;
+    background: #fafafa;
+    border-bottom: 1px dashed var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ticket-header h2 {
+    font-size: 20px;
+    color: var(--secondary);
+    margin-bottom: 4px;
+}
+
+.ticket-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.timer {
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.timer.warning {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* --- Body: lista de items --- */
+.ticket-body {
+    padding: 16px;
+    flex: 1;
+}
+
+.ticket-items { list-style: none; }
+
+.ticket-items li {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.ticket-items li:last-child { border-bottom: none; }
+
+.ticket-items .qty {
+    background: var(--primary-light);
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.item-desc strong {
+    display: block;
+    color: var(--text-dark);
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.item-desc small {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* --- Footer --- */
+.ticket-footer {
+    padding: 16px;
+    background: #fafafa;
+    border-top: 1px solid var(--border-color);
+}
